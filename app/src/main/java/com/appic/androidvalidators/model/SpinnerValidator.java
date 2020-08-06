@@ -1,10 +1,17 @@
 package com.appic.androidvalidators.model;
 
-import android.util.Log;
 import android.widget.Spinner;
+
+import java.util.HashMap;
+
 
 public class SpinnerValidator {
     public static String TAG = SpinnerValidator.class.getSimpleName();
+
+    //Static Response Code.
+    public static String SUCCESS = "Success";
+    public static String NULL = "NULL";
+    public static String IS_REQUIRED = "IsRequired";
 
     public static class SpinnerBuilder {
         private Spinner mSpinner; //This is important, so we'll pass it to the constructor.
@@ -21,16 +28,22 @@ public class SpinnerValidator {
         }
 
 
-        public SpinnerValidator build() {
-            SpinnerValidator spinnerValidator = new SpinnerValidator();
+        public HashMap<String, Boolean> build() {
+            HashMap<String, Boolean> spinnerBooleanHashMap = new HashMap<String, Boolean>();
+
             if (this.isRequired) {
-                if (mSpinner != null && mSpinner.getSelectedItem() != null) {
-                    return spinnerValidator;
-                } else {
-                    Log.e(TAG, "Not Selected or Null");
-                }
+                spinnerBooleanHashMap.put(IS_REQUIRED, true);
+            } else {
+                spinnerBooleanHashMap.put(IS_REQUIRED, false);
             }
-            return null;
+            if (mSpinner != null && mSpinner.getSelectedItem() != null) {
+                spinnerBooleanHashMap.put(NULL, false);
+                spinnerBooleanHashMap.put(SUCCESS, true);
+            } else {
+                spinnerBooleanHashMap.put(NULL, true);
+                spinnerBooleanHashMap.put(SUCCESS, false);
+            }
+            return spinnerBooleanHashMap;
         }
 
     }

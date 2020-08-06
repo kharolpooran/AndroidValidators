@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     EditText username, email, number, userpassword, confpassword;
     Button btn;
     HashMap<String, Boolean> phoneNumber;
+    HashMap<String, Boolean> spinnerHash;
+    HashMap<String, Boolean> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +59,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .setRequired(true)
                 .build();
 
-        Username username = new Username.UsernameBuilder("pooran")
-                .setRequired(true)
-                .setCaseSensitive(true)
-                .build();
 
-        phoneNumber = new PhoneNumber.PhoneNumberBuilder("8866651281")
-                .setRequired(true)
-                .setMaxLenght(10)
-                .build();
-
-        SpinnerValidator validator = new SpinnerValidator.SpinnerBuilder(spinner)
+        spinnerHash = new SpinnerValidator.SpinnerBuilder(spinner)
                 .setRequired(true)
                 .build();
 
@@ -84,24 +77,50 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                phoneNumber = new PhoneNumber.PhoneNumberBuilder(number.getText().toString())
+                        .setRequired(false)
+                        .setMaxLenght(10)
+                        .build();
+
                 if (phoneNumber.get(SUCCESS)) {
                     Toast.makeText(MainActivity.this, SUCCESS, Toast.LENGTH_SHORT).show();
                 } else {
-                    if (!phoneNumber.get(IS_REQUIRED)) {
-                        if (!phoneNumber.get(EMPTY)) {
+                    if (phoneNumber.get(IS_REQUIRED)) {
+                        Toast.makeText(MainActivity.this, IS_REQUIRED, Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (phoneNumber.get(EMPTY)) {
+                            Toast.makeText(MainActivity.this, EMPTY, Toast.LENGTH_SHORT).show();
+                        } else {
                             if (!phoneNumber.get(MAX_LENGTH)) {
                                 Toast.makeText(MainActivity.this, MAX_LENGTH, Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(MainActivity.this, EMPTY, Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else {
+                }
+                user = new Username.UsernameBuilder(username.getText().toString())
+                        .setRequired(true)
+                        .setCaseSensitive(true)
+                        .build();
+                if (user.get(Username.SUCCESS)) {
+                    Toast.makeText(MainActivity.this, SUCCESS, Toast.LENGTH_SHORT).show();
+                } else {
+                    if (user.get(Username.IS_REQUIRED)) {
                         Toast.makeText(MainActivity.this, IS_REQUIRED, Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (user.get(Username.EMPTY)) {
+                            Toast.makeText(MainActivity.this, EMPTY, Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (user.get(Username.IS_CASE_SENSITIVE)) {
+                                Toast.makeText(MainActivity.this, Username.IS_CASE_SENSITIVE, Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (!user.get(Username.IS_ALL_LOWER_CASE)) {
+                                    Toast.makeText(MainActivity.this, Username.IS_ALL_LOWER_CASE, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
                     }
                 }
-
-
             }
         });
     }

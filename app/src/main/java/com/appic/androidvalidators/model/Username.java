@@ -2,8 +2,10 @@ package com.appic.androidvalidators.model;
 
 import android.util.Log;
 
+import java.util.HashMap;
+
 public class Username {
-    public static String TAG=Username.class.getSimpleName();
+    public static String TAG = Username.class.getSimpleName();
     private String value = ""; //This is important, so we'll pass it to the constructor.
     private boolean isRequired = false;
     private boolean isCaseSensitive = false;
@@ -20,13 +22,20 @@ public class Username {
         return isCaseSensitive;
     }
 
+    //Static Response Code.
+    public static String SUCCESS = "Success";
+    public static String IS_CASE_SENSITIVE = "CaseSensitive";
+    public static String IS_REQUIRED = "IsRequired";
+    public static String IS_ALL_LOWER_CASE = "IsAllLowerCase";
+    public static String EMPTY = "Empty";
+
     public static class UsernameBuilder {
         private String value; //This is important, so we'll pass it to the constructor.
         private boolean isRequired = false;
         private boolean isCaseSensitive = false;
 
         public UsernameBuilder(String value) {
-            this.value = value;
+            this.value = value.trim();
         }
 
         public Username.UsernameBuilder setRequired(boolean isRequired) {
@@ -39,22 +48,36 @@ public class Username {
             return this;
         }
 
-        public Username build() {
-            Username username = new Username(this);
+        public HashMap<String, Boolean> build() {
+            HashMap<String, Boolean> username = new HashMap<>();
+
             if (this.isRequired) {
+                username.put(IS_REQUIRED, true);
+            } else {
+                username.put(IS_REQUIRED, false);
+            }
+            if (this.value != null && !this.value.isEmpty()) {
+                username.put(EMPTY, false);
                 if (this.isCaseSensitive) {
+                    username.put(IS_CASE_SENSITIVE, true);
                     if (isStringLowerCase(this.value)) {
-                        return username;
+                        username.put(SUCCESS, true);
+                        username.put(IS_ALL_LOWER_CASE, true);
                     } else {
-                        Log.e(TAG,"Not CaseSensitive.");
+                        username.put(SUCCESS, false);
+                        username.put(IS_ALL_LOWER_CASE, false);
                     }
                 } else {
-                    Log.e(TAG,"Not CaseSensitive.");
+                    username.put(IS_CASE_SENSITIVE, false);
+                    username.put(IS_ALL_LOWER_CASE, false);
+                    username.put(SUCCESS, false);
                 }
             } else {
-                return username;
+                username.put(EMPTY, true);
+                username.put(SUCCESS, false);
             }
-            return null;
+
+            return username;
         }
 
     }

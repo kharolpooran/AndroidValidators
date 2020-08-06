@@ -1,10 +1,17 @@
 package com.appic.androidvalidators.model;
 
-import android.util.Log;
 import android.widget.CheckBox;
+
+import java.util.HashMap;
+
 
 public class CheckBoxValidator {
     public static String TAG = CheckBoxValidator.class.getSimpleName();
+
+    //Static Response Code.
+    public static String SUCCESS = "Success";
+    public static String NULL = "NULL";
+    public static String IS_REQUIRED = "IsRequired";
 
     public static class CheckBoxBuilder {
         private CheckBox mCheckBox; //This is important, so we'll pass it to the constructor.
@@ -20,16 +27,21 @@ public class CheckBoxValidator {
         }
 
 
-        public CheckBoxValidator build() {
-            CheckBoxValidator checkBoxValidator = new CheckBoxValidator();
+        public HashMap<String, Boolean> build() {
+            HashMap<String, Boolean> hashMap = new HashMap<String, Boolean>();
             if (this.isRequired) {
-                if (mCheckBox != null && !mCheckBox.isChecked()) {
-                    return checkBoxValidator;
-                } else {
-                    Log.e(TAG, "Not Selected or Null");
-                }
+                hashMap.put(IS_REQUIRED, true);
+            } else {
+                hashMap.put(IS_REQUIRED, false);
             }
-            return null;
+            if (mCheckBox != null && !mCheckBox.isChecked()) {
+                hashMap.put(NULL, false);
+                hashMap.put(SUCCESS, true);
+            } else {
+                hashMap.put(NULL, true);
+                hashMap.put(SUCCESS, false);
+            }
+            return hashMap;
         }
 
     }
