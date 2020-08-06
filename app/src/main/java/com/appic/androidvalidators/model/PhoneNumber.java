@@ -73,25 +73,22 @@ public class PhoneNumber {
             HashMap<String, Boolean> phoneNumberValidatorResp = new HashMap<String, Boolean>();
 
             if (this.isRequired) {
-                if (this.value != null && !this.value.isEmpty() && this.value.length() > 0) {
-                    if (this.value.length() == maxLength) {
-                        phoneNumberValidatorResp.put(SUCCESS, true);
-                        phoneNumberValidatorResp.put(MAX_LENGTH, true);
-                    } else {
-                        phoneNumberValidatorResp.put(SUCCESS, false);
-                        phoneNumberValidatorResp.put(MAX_LENGTH, false);
-                    }
+                phoneNumberValidatorResp.put(IS_REQUIRED, true);
+            } else {
+                phoneNumberValidatorResp.put(IS_REQUIRED, false);
+            }
+            if (this.value != null && !this.value.isEmpty()) {
+                phoneNumberValidatorResp.put(EMPTY, false);
+                if (this.value.length() == maxLength) {
+                    phoneNumberValidatorResp.put(SUCCESS, true);
+                    phoneNumberValidatorResp.put(MAX_LENGTH, true);
                 } else {
                     phoneNumberValidatorResp.put(SUCCESS, false);
-                    phoneNumberValidatorResp.put(EMPTY, true);
+                    phoneNumberValidatorResp.put(MAX_LENGTH, false);
                 }
             } else {
-                if (this.value != null && !this.value.isEmpty()) {
-
-                } else {
-                    phoneNumberValidatorResp.put(SUCCESS, false);
-                    phoneNumberValidatorResp.put(EMPTY, true);
-                }
+                phoneNumberValidatorResp.put(SUCCESS, false);
+                phoneNumberValidatorResp.put(EMPTY, true);
             }
             return phoneNumberValidatorResp;
         }

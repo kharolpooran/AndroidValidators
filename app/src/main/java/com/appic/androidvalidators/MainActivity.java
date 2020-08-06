@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .setCaseSensitive(true)
                 .build();
 
-        phoneNumber = new PhoneNumber.PhoneNumberBuilder("88666")
+        phoneNumber = new PhoneNumber.PhoneNumberBuilder("8866651281")
                 .setRequired(true)
                 .setMaxLenght(10)
                 .build();
@@ -84,20 +84,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (phoneNumber.get(IS_REQUIRED)) {
-                    if (phoneNumber.get(EMPTY)) {
-                        if (phoneNumber.get(MAX_LENGTH)) {
-                            if (phoneNumber.get(SUCCESS)) {
-                                Toast.makeText(MainActivity.this, "Correct", Toast.LENGTH_SHORT).show();
+                if (phoneNumber.get(SUCCESS)) {
+                    Toast.makeText(MainActivity.this, SUCCESS, Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!phoneNumber.get(IS_REQUIRED)) {
+                        if (!phoneNumber.get(EMPTY)) {
+                            if (!phoneNumber.get(MAX_LENGTH)) {
+                                Toast.makeText(MainActivity.this, MAX_LENGTH, Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(MainActivity.this, MAX_LENGTH, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, EMPTY, Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(MainActivity.this, EMPTY, Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(MainActivity.this, IS_REQUIRED, Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(MainActivity.this, IS_REQUIRED, Toast.LENGTH_SHORT).show();
+                    }
                 }
 
 
