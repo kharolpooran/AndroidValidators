@@ -18,6 +18,8 @@ import com.appic.androidvalidators.model.PhoneNumber;
 import com.appic.androidvalidators.model.SpinnerValidator;
 import com.appic.androidvalidators.model.Username;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     Spinner spinner;
@@ -53,13 +55,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .setCaseSensitive(true)
                 .build();
 
-        PhoneNumber phoneNumber = new PhoneNumber.PhoneNumberBuilder("8866651281")
+        HashMap<String, Boolean> phoneNumber = new PhoneNumber.PhoneNumberBuilder("8866651281")
                 .setRequired(true)
+                .setMaxLenght(10)
                 .build();
 
         SpinnerValidator validator = new SpinnerValidator.SpinnerBuilder(spinner)
                 .setRequired(true)
                 .build();
+
         Password password = new Password.PasswordBuilder("123456")
                 .setMinValue(6)
                 .setMaxValue(16)
