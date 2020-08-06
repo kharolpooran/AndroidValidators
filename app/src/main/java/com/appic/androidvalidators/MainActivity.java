@@ -3,10 +3,13 @@ package com.appic.androidvalidators;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.appic.androidvalidators.model.Email;
@@ -18,14 +21,22 @@ import com.appic.androidvalidators.model.Username;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     Spinner spinner;
-    String[] country = {"India", "USA", "China", "Japan", "Other"};
+    String[] country = {"Mr", "Mrs"};
+    EditText username,email,number,userpassword,confpassword;
+    Button btn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinner);
+        username=  findViewById(R.id.username);
+        email=  findViewById(R.id.email);
+        number=  findViewById(R.id.number);
+        userpassword=  findViewById(R.id.userpassword);
+        confpassword=  findViewById(R.id.confpassword);
+        btn=  findViewById(R.id.btn);
         spinner.setOnItemSelectedListener(this);
         //Creating the ArrayAdapter instance having the country list
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, country);
@@ -57,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .setRequired(true)
                 .setConfirmPassword("1234567891011")
                 .build();
+
 
 
     }
