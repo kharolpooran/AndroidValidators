@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     HashMap<String, Boolean> phoneNumber;
     HashMap<String, Boolean> spinnerHash;
     HashMap<String, Boolean> user;
+    HashMap<String, Boolean> emailValidation;
+    HashMap<String, Boolean> password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Setting the ArrayAdapter data on the Spinner
         spinner.setAdapter(aa);
 
-        Email email = new Email.EmailBuilder("poorankharol@gmail.com")
+        emailValidation = new Email.EmailBuilder("poorankharol@gmail.com")
                 .setRequired(true)
                 .build();
 
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .setRequired(true)
                 .build();
 
-        final Password password = new Password.PasswordBuilder("123456")
+         password = new Password.PasswordBuilder("123456")
                 .setMinValue(6)
                 .setMaxValue(16)
                 .setSpecialCharacterRequired(true)

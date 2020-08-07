@@ -2,11 +2,20 @@ package com.appic.androidvalidators.model;
 
 import android.util.Log;
 
+import java.util.HashMap;
+
 public class Email {
 
     public static String TAG=Email.class.getSimpleName();
     private String value = ""; //This is important, so we'll pass it to the constructor.
     private boolean isRequired = false;
+    public static String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+    //Static Response Code.
+    public static String SUCCESS = "Success";
+    public static String IS_EMAIL = "IsEmail";
+    public static String IS_REQUIRED = "IsRequired";
+    public static String EMPTY = "Empty";
 
     public String getValue() {
         return value;
@@ -29,17 +38,19 @@ public class Email {
             return this;
         }
 
-        public Email build() {
-            Email email = new Email(this);
+        public HashMap<String, Boolean> build() {
+            HashMap<String, Boolean> emailValidationResponse = new HashMap<>();
             if (this.isRequired) {
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if (this.value.matches(emailPattern)) {
-                    return email;
+                    emailValidationResponse.put(SUCCESS, true);
+                    emailValidationResponse.put(IS_EMAIL, true);
                 } else {
-                    Log.e(TAG,"Invalid Email.");
+                    emailValidationResponse.put(SUCCESS, false);
+                    emailValidationResponse.put(IS_EMAIL, false);
                 }
             }
-            return null;
+            return emailValidationResponse;
         }
 
     }

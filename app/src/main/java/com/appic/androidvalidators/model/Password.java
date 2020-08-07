@@ -3,6 +3,7 @@ package com.appic.androidvalidators.model;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class Password {
@@ -61,58 +62,78 @@ public class Password {
             return this;
         }
 
-        public Password build() {
+        public HashMap<String, Boolean> build() {
+            HashMap<String, Boolean> passwordValidationResponse = new HashMap<>();
+
             Pattern specailCharPatten = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-            //Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
-            //Pattern lowerCasePatten = Pattern.compile("[a-z ]");
+            Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
+            Pattern lowerCasePatten = Pattern.compile("[a-z ]");
             Pattern digitCasePatten = Pattern.compile("[0-9 ]");
-            Password password = new Password();
+            boolean isSuccess = true;
             if (this.isRequired) {
                 if (this.userPassword.length() != 0) {
                     if (this.minValue != 0 && this.maxValue != 0) {
                         if (this.userPassword.length() > this.minValue && this.userPassword.length() < this.maxValue) {
+
                             if (this.isSpecialCharacterRequired) {
-                                if (!specailCharPatten.matcher(this.userPassword).find()) {
-                                    Log.e(TAG,"Not Special Char");
-                                }
-                            } else if (this.isNumberRequired) {
-                                if (!digitCasePatten.matcher(this.userPassword).find()) {
-                                    //false
-                                    Log.e(TAG,"Not Digit");
-                                }
-                            } else {
-                                if (!this.userPassword.equals(this.confirmPassword)) {
-                                    Log.e(TAG,"Not Same Password");
+                                if (specailCharPatten.matcher(this.userPassword).find()) {
+                                    Log.e(TAG, "Not Special Char");
+                                } else {
+                                    isSuccess = false;
                                 }
                             }
-                        }
-                        else {
-                            Log.e(TAG,"Length Not Valid");
+
+                            if (this.isNumberRequired) {
+                                if (!digitCasePatten.matcher(this.userPassword).find()) {
+                                    //false
+                                    Log.e(TAG, "Not Digit");
+                                } else {
+                                    isSuccess = false;
+                                }
+                            }
+
+                            if (this.isNumberRequired) {
+                                if (!digitCasePatten.matcher(this.userPassword).find()) {
+                                    //false
+                                    Log.e(TAG, "Not Digit");
+                                } else {
+                                    isSuccess = false;
+                                }
+                            }
+
+                            if (!this.userPassword.equals(this.confirmPassword)) {
+                                Log.e(TAG, "Not Same Password");
+                            } else {
+                                isSuccess = false;
+                            }
+
+                        } else {
+                            isSuccess = false;
                         }
                     } else {
                         if (this.isSpecialCharacterRequired) {
                             if (!specailCharPatten.matcher(this.userPassword).find()) {
                                 //false
-                                Log.e(TAG,"Not Special Char");
+                                Log.e(TAG, "Not Special Char");
                             }
                         } else if (this.isNumberRequired) {
                             if (!digitCasePatten.matcher(this.userPassword).find()) {
                                 //false
-                                Log.e(TAG,"Not Digit");
+                                Log.e(TAG, "Not Digit");
                             }
                         } else {
                             if (!this.userPassword.equals(this.confirmPassword)) {
                                 //false
-                                Log.e(TAG,"Not Same Password");
+                                Log.e(TAG, "Not Same Password");
                             }
                         }
                     }
                 } else {
                     //Empty String
-                    Log.e(TAG,"Empty String");
+                    Log.e(TAG, "Empty String");
                 }
             }
-            return password;
+            return passwordValidationResponse;
         }
 
     }
