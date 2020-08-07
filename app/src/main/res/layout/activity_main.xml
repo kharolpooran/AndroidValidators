@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/LLMain"
     tools:context=".MainActivity">
 
     <Spinner
@@ -52,6 +53,12 @@
         android:inputType="textPassword"
         android:layout_height="wrap_content"
         android:hint="Confirm Password"/>
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="match_parent"
+        android:text="I Accept"
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/btn"

@@ -39,7 +39,7 @@ public class Email {
         }
 
         public HashMap<String, Boolean> build() {
-            boolean success = true;
+            boolean success;
             HashMap<String, Boolean> emailValidationResponse = new HashMap<>();
             if (this.isRequired) {
                 if (this.value != null && !this.value.isEmpty()) {
