@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Email {
 
-    public static String TAG=Email.class.getSimpleName();
+    public static String TAG = Email.class.getSimpleName();
     private String value = ""; //This is important, so we'll pass it to the constructor.
     private boolean isRequired = false;
     public static String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -39,17 +39,39 @@ public class Email {
         }
 
         public HashMap<String, Boolean> build() {
+            boolean success = true;
             HashMap<String, Boolean> emailValidationResponse = new HashMap<>();
             if (this.isRequired) {
-                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                if (this.value.matches(emailPattern)) {
-                    emailValidationResponse.put(SUCCESS, true);
-                    emailValidationResponse.put(IS_EMAIL, true);
+                if (this.value != null && !this.value.isEmpty()) {
+                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                    if (this.value.matches(emailPattern)) {
+                        success = true;
+                        emailValidationResponse.put(IS_EMAIL, true);
+                    } else {
+                        success = false;
+                        emailValidationResponse.put(IS_EMAIL, false);
+                    }
                 } else {
-                    emailValidationResponse.put(SUCCESS, false);
-                    emailValidationResponse.put(IS_EMAIL, false);
+                    success = false;
+                    emailValidationResponse.put(IS_REQUIRED, false);
+                }
+
+            } else {
+                if (this.value != null && !this.value.isEmpty()) {
+                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                    if (this.value.matches(emailPattern)) {
+                        success = true;
+                        emailValidationResponse.put(IS_EMAIL, true);
+                    } else {
+                        success = false;
+                        emailValidationResponse.put(IS_EMAIL, false);
+                    }
+                } else {
+                    success = true;
+                    emailValidationResponse.put(IS_REQUIRED, false);
                 }
             }
+            emailValidationResponse.put(SUCCESS, success);
             return emailValidationResponse;
         }
 
