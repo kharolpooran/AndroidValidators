@@ -72,36 +72,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .build();
 
 
-        password = new Password.PasswordBuilder(userpassword.getText().toString())
-                .setMinValue(6)
-                .setMaxValue(16)
-                .setSpecialCharacterRequired(true)
-                .setNumbersOnly(false)
-                .setRequired(true)
-                .setConfirmPassword(confpassword.getText().toString())
-                .build();
-
-        user = new Username.UsernameBuilder(username.getText().toString())
-                .setRequired(true)
-                .setCaseSensitive(true)
-                .build();
-
-        emailValidation = new Email.EmailBuilder(email.getText().toString())
-                .setRequired(true)
-                .build();
-
-        phoneNumber = new PhoneNumber.PhoneNumberBuilder(number.getText().toString())
-                .setRequired(true)
-                .setMaxLenght(10)
-                .build();
-
-        checkBoxValidation = new CheckBoxValidator.CheckBoxBuilder(checkbox)
-                .setRequired(true)
-                .build();
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                password = new Password.PasswordBuilder(userpassword.getText().toString())
+                        .setMinValue(6)
+                        .setMaxValue(8)
+                        .setSpecialCharacterRequired(true)
+                        .setNumbersOnly(false)
+                        .setRequired(true)
+                        .setConfirmPassword(confpassword.getText().toString())
+                        .comparePassword(true)
+                        .setLowerCase(false)
+                        .setUpperCase(false)
+                        .build();
+
+                user = new Username.UsernameBuilder(username.getText().toString())
+                        .setRequired(true)
+                        .setCaseSensitive(true)
+                        .build();
+
+                emailValidation = new Email.EmailBuilder(email.getText().toString())
+                        .setRequired(true)
+                        .build();
+
+                phoneNumber = new PhoneNumber.PhoneNumberBuilder(number.getText().toString())
+                        .setRequired(true)
+                        .setMaxLenght(10)
+                        .build();
+
+                checkBoxValidation = new CheckBoxValidator.CheckBoxBuilder(checkbox)
+                        .setRequired(true)
+                        .build();
+
 
                 if (user.get(Username.SUCCESS) && password.get(Password.SUCCESS) && emailValidation.get(Email.SUCCESS) && phoneNumber.get(PhoneNumber.SUCCESS) && spinnerHash.get(SpinnerValidator.SUCCESS) && checkBoxValidation.get(CheckBoxValidator.SUCCESS)) {
                     showSnackBar("Success");
@@ -131,16 +135,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     }
                                 } else {
                                     if (phoneNumber.get(PhoneNumber.IS_REQUIRED)) {
-                                        if (!phoneNumber.get(MAX_LENGTH)) {
-                                            showSnackBar("number max length exceeds");
+                                        if (!phoneNumber.get(Email.EMPTY)) {
+                                            if (!phoneNumber.get(PhoneNumber.MAX_LENGTH)) {
+                                                showSnackBar("number max length exceeds");
+                                            }
+                                        } else {
+                                            showSnackBar("number is should not be empty");
                                         }
+
                                     } else {
                                         showSnackBar("number is required");
                                     }
                                 }
                             } else {
                                 if (emailValidation.get(Email.IS_REQUIRED)) {
-                                    if (emailValidation.get(Email.EMPTY)) {
+                                    if (!emailValidation.get(Email.EMPTY)) {
                                         if (!emailValidation.get(Email.IS_EMAIL)) {
                                             showSnackBar("incorrect email address");
                                         }
@@ -153,41 +162,107 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 }
                             }
                         } else {
-                            if (password.get(EMPTY)) {
-                                if (password.get(Password.RANGE)) {
-                                    if (password.get(Password.NUMBER)) {
-                                        if (password.get(Password.SPECIAL_CHARACTER)) {
-                                            if (password.get(Password.UPPER_CASE)) {
-                                                if (password.get(Password.LOWER_CASE)) {
-                                                    if (password.get(Password.CONFIRM_PASSWORD)) {
-                                                        if (!password.get(Password.MATCH_PASSWORD)) {
-                                                            showSnackBar("Password and Confirm Password doesn't match.");
+                            /*if (password.get(Password.IS_REQUIRED)) {
+                                if (!password.get(Password.EMPTY)) {
+                                    if (password.get(Password.RANGE)) {
+                                        if (password.get(Password.NUMBER)) {
+                                            if (password.get(Password.SPECIAL_CHARACTER)) {
+                                                if (password.get(Password.UPPER_CASE)) {
+                                                    if (password.get(Password.LOWER_CASE)) {
+                                                        if (password.get(Password.CONFIRM_PASSWORD)) {
+                                                            if (!password.get(Password.MATCH_PASSWORD)) {
+                                                                showSnackBar("Password and Confirm Password doesn't match.");
+                                                            }
+                                                        } else {
+                                                            showSnackBar("Confirm Password Missing !");
                                                         }
                                                     } else {
-                                                        showSnackBar("Confirm Password Missing !");
+                                                        showSnackBar("Password should contain lower case !");
                                                     }
                                                 } else {
-                                                    showSnackBar("Password should contain lower case !");
+                                                    showSnackBar("Password should contain upper case !");
                                                 }
                                             } else {
-                                                showSnackBar("Password should contain upper case !");
+                                                showSnackBar("Password Should contatin special character !");
                                             }
                                         } else {
-                                            showSnackBar("Password Should contatin special character !");
+                                            showSnackBar("Password should contain number");
                                         }
                                     } else {
-                                        showSnackBar("Password should contain number");
+                                        showSnackBar("Password Length Is Incorrect");
                                     }
                                 } else {
-                                    showSnackBar("Password Length Is Incorrect");
+                                    showSnackBar("Password is should not be empty");
+                                }
+                            }
+                            else {
+                                showSnackBar("Password is required");
+                            }*/
+
+
+
+                            if (password.get(Password.IS_REQUIRED)) {
+                                if (!password.get(Password.EMPTY)) {
+                                    if (password.get(Password.RANGE)) {
+                                        if (password.get(Password.NUMBER_REQUIRED)) {
+                                            if (!password.get(Password.NUMBER)) {
+                                                showSnackBar("Password should contain number");
+                                            } else {
+                                                if (password.get(Password.SPECIAL_CHARACTER_REQUIRED)) {
+                                                    if (!password.get(Password.SPECIAL_CHARACTER)) {
+                                                        showSnackBar("Password Should contatin special character !");
+                                                    } else {
+                                                        if (password.get(Password.UPPER_CASE_REQUIRED)) {
+                                                            if (!password.get(Password.UPPER_CASE)) {
+                                                                showSnackBar("Password should contain upper case !");
+                                                            }
+                                                            else {
+                                                                if (password.get(Password.LOWER_CASE_REQUIRED)) {
+                                                                    if (!password.get(Password.LOWER_CASE)) {
+                                                                        showSnackBar("Password should contain lower case !");
+                                                                    }
+                                                                    else {
+                                                                        if (!password.get(Password.CONFIRM_PASSWORD)) {
+                                                                            showSnackBar("Confirm Password Missing !");
+                                                                        } else {
+                                                                            if (!password.get(Password.MATCH_PASSWORD)) {
+                                                                                showSnackBar("Password and Confirm Password doesn't match.");
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else {
+                                                                    showSnackBar("Password should contain lower case !");
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else {
+                                                    //Check for other conditions
+                                                    showSnackBar("Password Should contatin special character !");
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            //Check for other conditions
+                                        }
+                                    } else {
+                                        showSnackBar("Password Length Is Incorrect");
+                                    }
+                                } else {
+                                    showSnackBar("Password is should not be empty");
                                 }
                             } else {
-                                showSnackBar("number is should not be empty");
+                                showSnackBar("Password is required");
                             }
+
                         }
                     } else {
                         if (user.get(Username.IS_REQUIRED)) {
                             if (user.get(Username.EMPTY)) {
+                                showSnackBar("username is should not be empty");
+                            } else {
                                 if (user.get(Username.IS_CASE_SENSITIVE)) {
                                     if (!user.get(Username.IS_ALL_LOWER_CASE)) {
                                         showSnackBar("username must be in lower case");
@@ -195,8 +270,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 } else {
                                     showSnackBar("username must be in lower case");
                                 }
-                            } else {
-                                showSnackBar("username is should not be empty");
                             }
                         } else {
                             showSnackBar("username is required");

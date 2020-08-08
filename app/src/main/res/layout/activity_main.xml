@@ -40,7 +40,7 @@
 
     <EditText
         android:layout_margin="5dp"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:id="@+id/userpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         android:layout_margin="5dp"
         android:id="@+id/confpassword"
         android:layout_width="match_parent"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:layout_height="wrap_content"
         android:hint="Confirm Password"/>
 

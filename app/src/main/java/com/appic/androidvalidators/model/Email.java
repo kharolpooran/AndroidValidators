@@ -42,7 +42,9 @@ public class Email {
             boolean success;
             HashMap<String, Boolean> emailValidationResponse = new HashMap<>();
             if (this.isRequired) {
+                emailValidationResponse.put(IS_REQUIRED, true);
                 if (this.value != null && !this.value.isEmpty()) {
+                    emailValidationResponse.put(EMPTY, false);
                     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                     if (this.value.matches(emailPattern)) {
                         success = true;
@@ -53,11 +55,13 @@ public class Email {
                     }
                 } else {
                     success = false;
-                    emailValidationResponse.put(IS_REQUIRED, false);
+                    emailValidationResponse.put(EMPTY, true);
                 }
 
             } else {
+                emailValidationResponse.put(IS_REQUIRED, false);
                 if (this.value != null && !this.value.isEmpty()) {
+                    emailValidationResponse.put(EMPTY, false);
                     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                     if (this.value.matches(emailPattern)) {
                         success = true;
@@ -68,7 +72,7 @@ public class Email {
                     }
                 } else {
                     success = true;
-                    emailValidationResponse.put(IS_REQUIRED, false);
+                    emailValidationResponse.put(EMPTY, false);
                 }
             }
             emailValidationResponse.put(SUCCESS, success);
