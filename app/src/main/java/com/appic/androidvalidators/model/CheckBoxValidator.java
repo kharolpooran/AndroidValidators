@@ -28,7 +28,7 @@ public class CheckBoxValidator {
 
 
         public HashMap<String, Boolean> build() {
-            HashMap<String, Boolean> hashMap = new HashMap<String, Boolean>();
+            HashMap<String, Boolean> hashMap = new HashMap<>();
             if (this.isRequired) {
                 hashMap.put(IS_REQUIRED, true);
             } else {

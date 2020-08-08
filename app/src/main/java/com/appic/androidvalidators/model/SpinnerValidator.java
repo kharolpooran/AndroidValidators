@@ -30,7 +30,7 @@ public class SpinnerValidator {
 
         public HashMap<String, Boolean> build() {
             HashMap<String, Boolean> spinnerBooleanHashMap = new HashMap<String, Boolean>();
-
+            boolean success = true;
             if (this.isRequired) {
                 spinnerBooleanHashMap.put(IS_REQUIRED, true);
             } else {
@@ -38,11 +38,12 @@ public class SpinnerValidator {
             }
             if (mSpinner != null && mSpinner.getSelectedItem() != null) {
                 spinnerBooleanHashMap.put(NULL, false);
-                spinnerBooleanHashMap.put(SUCCESS, true);
+                success = true;
             } else {
+                success = false;
                 spinnerBooleanHashMap.put(NULL, true);
-                spinnerBooleanHashMap.put(SUCCESS, false);
             }
+            spinnerBooleanHashMap.put(SUCCESS, success);
             return spinnerBooleanHashMap;
         }
 

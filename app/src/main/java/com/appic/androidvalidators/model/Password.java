@@ -32,6 +32,8 @@ public class Password {
         return isRequired;
     }
 
+    public boolean getComparePassword() { return compare_password;}
+
     public static class PasswordBuilder {
         private String userPassword; //This is important, so we'll pass it to the constructor.
         private String confirmPassword;
@@ -329,12 +331,13 @@ public class Password {
                     passwordValidationResponse.put(EMPTY, false);
                 }
             }
-
+            passwordValidationResponse.put(SUCCESS, isSuccess);
             return passwordValidationResponse;
         }
 
     }
 
-    private Password() {
+    private Password(Password.PasswordBuilder passwordBuilder) {
+        this.compare_password = passwordBuilder.compare_password;
     }
 }

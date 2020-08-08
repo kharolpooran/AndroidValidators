@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     CheckBox checkbox;
     HashMap<String, Boolean> emailValidation;
     HashMap<String, Boolean> password;
+    HashMap<String, Boolean> checkBoxValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,31 +66,145 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Setting the ArrayAdapter data on the Spinner
         spinner.setAdapter(aa);
 
-        emailValidation = new Email.EmailBuilder("poorankharol@gmail.com")
-                .setRequired(true)
-                .build();
-
 
         spinnerHash = new SpinnerValidator.SpinnerBuilder(spinner)
                 .setRequired(true)
                 .build();
 
 
-        password = new Password.PasswordBuilder("123456")
+        password = new Password.PasswordBuilder(userpassword.getText().toString())
                 .setMinValue(6)
                 .setMaxValue(16)
                 .setSpecialCharacterRequired(true)
                 .setNumbersOnly(false)
                 .setRequired(true)
-                .setConfirmPassword("1234567891011")
+                .setConfirmPassword(confpassword.getText().toString())
                 .build();
 
+        user = new Username.UsernameBuilder(username.getText().toString())
+                .setRequired(true)
+                .setCaseSensitive(true)
+                .build();
+
+        emailValidation = new Email.EmailBuilder(email.getText().toString())
+                .setRequired(true)
+                .build();
+
+        phoneNumber = new PhoneNumber.PhoneNumberBuilder(number.getText().toString())
+                .setRequired(true)
+                .setMaxLenght(10)
+                .build();
+
+        checkBoxValidation = new CheckBoxValidator.CheckBoxBuilder(checkbox)
+                .setRequired(true)
+                .build();
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (isValidUsername()) {
+                if (user.get(Username.SUCCESS) && password.get(Password.SUCCESS) && emailValidation.get(Email.SUCCESS) && phoneNumber.get(PhoneNumber.SUCCESS) && spinnerHash.get(SpinnerValidator.SUCCESS) && checkBoxValidation.get(CheckBoxValidator.SUCCESS)) {
+                    showSnackBar("Success");
+                } else {
+                    if (user.get(Username.SUCCESS)) {
+                        if (password.get(Password.SUCCESS)) {
+                            if (emailValidation.get(Email.SUCCESS)) {
+                                if (phoneNumber.get(PhoneNumber.SUCCESS)) {
+                                    if (spinnerHash.get(SpinnerValidator.SUCCESS)) {
+                                        if (!checkBoxValidation.get(CheckBoxValidator.SUCCESS)) {
+                                            if (checkBoxValidation.get(CheckBoxValidator.IS_REQUIRED)) {
+                                                if (!checkBoxValidation.get(CheckBoxValidator.NULL)) {
+                                                    showSnackBar("Select any one item in Checkbox.");
+                                                }
+                                            } else {
+                                                showSnackBar("CheckBox is required.");
+                                            }
+                                        }
+                                    } else {
+                                        if (spinnerHash.get(SpinnerValidator.IS_REQUIRED)) {
+                                            if (!spinnerHash.get(SpinnerValidator.NULL)) {
+                                                showSnackBar("Select any one item in Spinner.");
+                                            }
+                                        } else {
+                                            showSnackBar("Spinner is required.");
+                                        }
+                                    }
+                                } else {
+                                    if (phoneNumber.get(PhoneNumber.IS_REQUIRED)) {
+                                        if (!phoneNumber.get(MAX_LENGTH)) {
+                                            showSnackBar("number max length exceeds");
+                                        }
+                                    } else {
+                                        showSnackBar("number is required");
+                                    }
+                                }
+                            } else {
+                                if (emailValidation.get(Email.IS_REQUIRED)) {
+                                    if (emailValidation.get(Email.EMPTY)) {
+                                        if (!emailValidation.get(Email.IS_EMAIL)) {
+                                            showSnackBar("incorrect email address");
+                                        }
+                                    } else {
+                                        showSnackBar("email is should not be empty");
+                                    }
+                                } else {
+                                    showSnackBar("email is required");
+
+                                }
+                            }
+                        } else {
+                            if (password.get(EMPTY)) {
+                                if (password.get(Password.RANGE)) {
+                                    if (password.get(Password.NUMBER)) {
+                                        if (password.get(Password.SPECIAL_CHARACTER)) {
+                                            if (password.get(Password.UPPER_CASE)) {
+                                                if (password.get(Password.LOWER_CASE)) {
+                                                    if (password.get(Password.CONFIRM_PASSWORD)) {
+                                                        if (!password.get(Password.MATCH_PASSWORD)) {
+                                                            showSnackBar("Password and Confirm Password doesn't match.");
+                                                        }
+                                                    } else {
+                                                        showSnackBar("Confirm Password Missing !");
+                                                    }
+                                                } else {
+                                                    showSnackBar("Password should contain lower case !");
+                                                }
+                                            } else {
+                                                showSnackBar("Password should contain upper case !");
+                                            }
+                                        } else {
+                                            showSnackBar("Password Should contatin special character !");
+                                        }
+                                    } else {
+                                        showSnackBar("Password should contain number");
+                                    }
+                                } else {
+                                    showSnackBar("Password Length Is Incorrect");
+                                }
+                            } else {
+                                showSnackBar("number is should not be empty");
+                            }
+                        }
+                    } else {
+                        if (user.get(Username.IS_REQUIRED)) {
+                            if (user.get(Username.EMPTY)) {
+                                if (user.get(Username.IS_CASE_SENSITIVE)) {
+                                    if (!user.get(Username.IS_ALL_LOWER_CASE)) {
+                                        showSnackBar("username must be in lower case");
+                                    }
+                                } else {
+                                    showSnackBar("username must be in lower case");
+                                }
+                            } else {
+                                showSnackBar("username is should not be empty");
+                            }
+                        } else {
+                            showSnackBar("username is required");
+                        }
+                    }
+                }
+
+               /* if (isValidUsername()) {
                     if (isValidEmail()) {
                         if (isValidNumber()) {
                             if (isValidPassword()) {
@@ -99,16 +214,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }
                         }
                     }
-                }
+                }*/
             }
         });
     }
 
     private boolean isChecked() {
 
-        HashMap<String, Boolean> user = new CheckBoxValidator.CheckBoxBuilder(checkbox)
-                .setRequired(true)
-                .build();
+
         if (user.get(CheckBoxValidator.SUCCESS)) {
             return true;
         } else {
@@ -128,10 +241,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private boolean isValidUsername() {
-        user = new Username.UsernameBuilder(username.getText().toString())
-                .setRequired(true)
-                .setCaseSensitive(true)
-                .build();
+
         if (user.get(Username.SUCCESS)) {
             //Toast.makeText(MainActivity.this, SUCCESS, Toast.LENGTH_SHORT).show();
             //showSnackBar("");
@@ -166,9 +276,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private boolean isValidEmail() {
 
-        emailValidation = new Email.EmailBuilder(email.getText().toString())
-                .setRequired(true)
-                .build();
+
         if (emailValidation.get(Email.SUCCESS)) {
             return true;
         } else {
@@ -194,55 +302,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private boolean isValidNumber() {
-        phoneNumber = new PhoneNumber.PhoneNumberBuilder(number.getText().toString())
-                .setRequired(true)
-                .setMaxLenght(10)
-                .build();
 
         if (phoneNumber.get(SUCCESS)) {
             return true;
         } else {
-            if (phoneNumber.get(IS_REQUIRED)) {
-                //Toast.makeText(MainActivity.this, IS_REQUIRED, Toast.LENGTH_SHORT).show();
-                showSnackBar("number is required");
-                return false;
-            } else {
-                if (phoneNumber.get(EMPTY)) {
-                    //Toast.makeText(MainActivity.this, EMPTY, Toast.LENGTH_SHORT).show();
-                    showSnackBar("number is should not be empty");
-                    return false;
-                } else {
-                    if (!phoneNumber.get(MAX_LENGTH)) {
-                        //Toast.makeText(MainActivity.this, MAX_LENGTH, Toast.LENGTH_SHORT).show();
-                        showSnackBar("incorrect number");
-                        return false;
-                    }
-                }
-            }
+
         }
         return true;
     }
 
     private boolean isValidPassword() {
-        password = new Password.PasswordBuilder(userpassword.getText().toString())
-                .setMinValue(6)
-                .setMaxValue(16)
-                .setSpecialCharacterRequired(true)
-                .setNumbersOnly(false)
-                .setRequired(true)
-                .setConfirmPassword(confpassword.getText().toString())
-                .build();
+
 
         if (password.get(Password.SUCCESS)) {
             return true;
-        }
-        else {
+        } else {
             if (password.get(Password.IS_REQUIRED)) {
                 //Toast.makeText(MainActivity.this, IS_REQUIRED, Toast.LENGTH_SHORT).show();
                 showSnackBar("password is required");
                 return false;
-            }
-            else {
+            } else {
                 if (password.get(Password.EMPTY)) {
                     //Toast.makeText(MainActivity.this, EMPTY, Toast.LENGTH_SHORT).show();
                     showSnackBar("password is should not be empty");
