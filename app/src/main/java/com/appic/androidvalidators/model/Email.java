@@ -16,6 +16,7 @@ public class Email {
     public static String IS_EMAIL = "IsEmail";
     public static String IS_REQUIRED = "IsRequired";
     public static String EMPTY = "Empty";
+    public HashMap<String, Boolean> emailValidationResponse;
 
     public String getValue() {
         return value;
@@ -25,9 +26,11 @@ public class Email {
         return isRequired;
     }
 
+
     public static class EmailBuilder {
         private String value; //This is important, so we'll pass it to the constructor.
         private boolean isRequired = false;
+        public HashMap<String, Boolean> emailValidationResponse;
 
         public EmailBuilder(String value) {
             this.value = value;
@@ -40,23 +43,31 @@ public class Email {
 
         public HashMap<String, Boolean> build() {
             boolean success;
-            HashMap<String, Boolean> emailValidationResponse = new HashMap<>();
+            emailValidationResponse = new HashMap<>();
             if (this.isRequired) {
                 emailValidationResponse.put(IS_REQUIRED, true);
-                if (this.value != null && !this.value.isEmpty()) {
-                    emailValidationResponse.put(EMPTY, false);
-                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                    if (this.value.matches(emailPattern)) {
-                        success = true;
-                        emailValidationResponse.put(IS_EMAIL, true);
-                    } else {
-                        success = false;
-                        emailValidationResponse.put(IS_EMAIL, false);
-                    }
+            } else {
+                emailValidationResponse.put(IS_REQUIRED, false);
+            }
+            if (this.value != null && !this.value.isEmpty()) {
+                emailValidationResponse.put(EMPTY, false);
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                if (this.value.matches(emailPattern)) {
+                    success = true;
+                    emailValidationResponse.put(IS_EMAIL, true);
                 } else {
                     success = false;
-                    emailValidationResponse.put(EMPTY, true);
+                    emailValidationResponse.put(IS_EMAIL, false);
                 }
+            } else {
+                success = false;
+                emailValidationResponse.put(EMPTY, true);
+                emailValidationResponse.put(IS_EMAIL, false);
+            }
+            emailValidationResponse.put(SUCCESS, success);
+            return emailValidationResponse;
+            /*    emailValidationResponse.put(IS_REQUIRED, true);
+
 
             } else {
                 emailValidationResponse.put(IS_REQUIRED, false);
@@ -74,15 +85,32 @@ public class Email {
                     success = true;
                     emailValidationResponse.put(EMPTY, false);
                 }
-            }
-            emailValidationResponse.put(SUCCESS, success);
-            return emailValidationResponse;
+            }*/
+
         }
 
+
+    }
+
+    public String getErrorMessage() {
+        if (emailValidationResponse.get(Email.IS_REQUIRED)) {
+            if (!emailValidationResponse.get(Email.EMPTY)) {
+                if (!emailValidationResponse.get(Email.IS_EMAIL)) {
+                    return "incorrect email address";
+                }
+            } else {
+                return "email is should not be empty";
+            }
+        } else {
+            return "email is required";
+
+        }
+        return "";
     }
 
     private Email(EmailBuilder emailBuilder) {
         this.value = emailBuilder.value;
         this.isRequired = emailBuilder.isRequired;
+        this.emailValidationResponse = emailBuilder.emailValidationResponse;
     }
 }

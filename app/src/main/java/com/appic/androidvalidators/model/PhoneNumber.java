@@ -16,6 +16,7 @@ public class PhoneNumber {
     //Static Response Code.
     public static String SUCCESS = "Success";
     public static String MAX_LENGTH = "MaxLength";
+    public static String MIN_LENGTH = "MinLength";
     public static String IS_REQUIRED = "IsRequired";
     public static String EMPTY = "Empty";
 
@@ -43,6 +44,7 @@ public class PhoneNumber {
         private String value; //This is important, so we'll pass it to the constructor.
         private boolean isRequired = false;
         private int maxLength = 10;
+        private int minLength = 10;
         private EditText mEditText;
         private boolean checkInputType = false;
 
@@ -55,17 +57,23 @@ public class PhoneNumber {
             return this;
         }
 
-        public PhoneNumberBuilder setMaxLenght(int maxLength) {
+        public PhoneNumberBuilder setMaxLength(int maxLength) {
             this.maxLength = maxLength;
             return this;
         }
 
-        public PhoneNumberBuilder setEditText(EditText mEditText){
+        public PhoneNumberBuilder setMinLength(int minLength) {
+            this.minLength = minLength;
+            return this;
+        }
+
+
+        public PhoneNumberBuilder setEditText(EditText mEditText) {
             this.mEditText = mEditText;
             return this;
         }
 
-        public PhoneNumberBuilder checkInputType(boolean checkInputType){
+        public PhoneNumberBuilder checkInputType(boolean checkInputType) {
             this.checkInputType = checkInputType;
             return this;
         }
@@ -80,16 +88,19 @@ public class PhoneNumber {
             }
             if (this.value != null && !this.value.isEmpty()) {
                 phoneNumberValidatorResp.put(EMPTY, false);
-                if (this.value.length() == maxLength) {
+                if (this.value.length() <= minLength && this.value.length() >= maxLength) {
                     phoneNumberValidatorResp.put(SUCCESS, true);
                     phoneNumberValidatorResp.put(MAX_LENGTH, true);
+                    phoneNumberValidatorResp.put(MIN_LENGTH, true);
                 } else {
                     phoneNumberValidatorResp.put(SUCCESS, false);
                     phoneNumberValidatorResp.put(MAX_LENGTH, false);
+                    phoneNumberValidatorResp.put(MIN_LENGTH, false);
                 }
             } else {
                 phoneNumberValidatorResp.put(SUCCESS, false);
                 phoneNumberValidatorResp.put(EMPTY, true);
+                phoneNumberValidatorResp.put(MAX_LENGTH, false);
             }
             return phoneNumberValidatorResp;
         }

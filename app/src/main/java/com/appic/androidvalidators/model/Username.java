@@ -1,7 +1,5 @@
 package com.appic.androidvalidators.model;
 
-import android.util.Log;
-
 import java.util.HashMap;
 
 public class Username {
@@ -75,6 +73,8 @@ public class Username {
             } else {
                 username.put(EMPTY, true);
                 username.put(SUCCESS, false);
+                username.put(IS_CASE_SENSITIVE, false);
+                username.put(IS_ALL_LOWER_CASE, false);
             }
 
             return username;

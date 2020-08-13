@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 phoneNumber = new PhoneNumber.PhoneNumberBuilder(number.getText().toString())
                         .setRequired(true)
-                        .setMaxLenght(10)
+                        .setMinLength(10)
+                        .setMaxLength(10)
                         .build();
 
                 checkBoxValidation = new CheckBoxValidator.CheckBoxBuilder(checkbox)
@@ -136,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 } else {
                                     if (phoneNumber.get(PhoneNumber.IS_REQUIRED)) {
                                         if (!phoneNumber.get(Email.EMPTY)) {
-                                            if (!phoneNumber.get(PhoneNumber.MAX_LENGTH)) {
-                                                showSnackBar("number max length exceeds");
+                                            if (!phoneNumber.get(PhoneNumber.MAX_LENGTH) && !phoneNumber.get(PhoneNumber.MIN_LENGTH)) {
+                                                showSnackBar("number must be between length");
                                             }
                                         } else {
                                             showSnackBar("number is should not be empty");
@@ -148,18 +149,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     }
                                 }
                             } else {
-                                if (emailValidation.get(Email.IS_REQUIRED)) {
-                                    if (!emailValidation.get(Email.EMPTY)) {
-                                        if (!emailValidation.get(Email.IS_EMAIL)) {
-                                            showSnackBar("incorrect email address");
-                                        }
-                                    } else {
-                                        showSnackBar("email is should not be empty");
-                                    }
-                                } else {
-                                    showSnackBar("email is required");
-
+                                //if (emailValidation.get(Email.IS_REQUIRED)) {
+                                //if (!emailValidation.get(Email.EMPTY)) {
+                                if (!emailValidation.get(Email.IS_EMAIL)) {
+                                    showSnackBar("incorrect email address");
                                 }
+                                //} else {
+                                //   showSnackBar("email is should not be empty");
+                                //}
+                                // } else {
+                                //   showSnackBar("email is required");
+
+                                // }
                             }
                         } else {
                             /*if (password.get(Password.IS_REQUIRED)) {
@@ -200,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }*/
 
 
-
                             if (password.get(Password.IS_REQUIRED)) {
                                 if (!password.get(Password.EMPTY)) {
                                     if (password.get(Password.RANGE)) {
@@ -210,18 +210,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                             } else {
                                                 if (password.get(Password.SPECIAL_CHARACTER_REQUIRED)) {
                                                     if (!password.get(Password.SPECIAL_CHARACTER)) {
-                                                        showSnackBar("Password Should contatin special character !");
+                                                        showSnackBar("Password Should contain special character !");
                                                     } else {
                                                         if (password.get(Password.UPPER_CASE_REQUIRED)) {
                                                             if (!password.get(Password.UPPER_CASE)) {
                                                                 showSnackBar("Password should contain upper case !");
-                                                            }
-                                                            else {
+                                                            } else {
                                                                 if (password.get(Password.LOWER_CASE_REQUIRED)) {
                                                                     if (!password.get(Password.LOWER_CASE)) {
                                                                         showSnackBar("Password should contain lower case !");
-                                                                    }
-                                                                    else {
+                                                                    } else {
                                                                         if (!password.get(Password.CONFIRM_PASSWORD)) {
                                                                             showSnackBar("Confirm Password Missing !");
                                                                         } else {
@@ -230,21 +228,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                                                             }
                                                                         }
                                                                     }
-                                                                }
-                                                                else {
+                                                                } else {
                                                                     showSnackBar("Password should contain lower case !");
                                                                 }
                                                             }
                                                         }
                                                     }
-                                                }
-                                                else {
+                                                } else {
                                                     //Check for other conditions
-                                                    showSnackBar("Password Should contatin special character !");
+                                                    showSnackBar("Password Should contain special character !");
                                                 }
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             //Check for other conditions
                                         }
                                     } else {
@@ -259,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                         }
                     } else {
-                        if (user.get(Username.IS_REQUIRED)) {
+                        /*if (user.get(Username.IS_REQUIRED)) {
                             if (user.get(Username.EMPTY)) {
                                 showSnackBar("username is should not be empty");
                             } else {
@@ -273,21 +268,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }
                         } else {
                             showSnackBar("username is required");
+                        }*/
+                        if (!user.get(Username.IS_CASE_SENSITIVE)) {
+                            showSnackBar("username must be in lower case");
                         }
                     }
                 }
 
-               /* if (isValidUsername()) {
-                    if (isValidEmail()) {
-                        if (isValidNumber()) {
-                            if (isValidPassword()) {
-                                if (isChecked()) {
-                                    showSnackBar("Success");
-                                }
-                            }
-                        }
-                    }
-                }*/
+
             }
         });
     }
