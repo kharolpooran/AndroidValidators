@@ -2,6 +2,8 @@ package com.appic.androidvalidators.model;
 
 import android.widget.Spinner;
 
+import com.appic.androidvalidators.interfaces.ErrorCallBack;
+
 import java.util.HashMap;
 
 
@@ -12,6 +14,7 @@ public class SpinnerValidator {
     public static String SUCCESS = "Success";
     public static String NULL = "NULL";
     public static String IS_REQUIRED = "IsRequired";
+    private ErrorCallBack errorCallBack;
 
     public static class SpinnerBuilder {
         private Spinner mSpinner; //This is important, so we'll pass it to the constructor.
@@ -38,7 +41,6 @@ public class SpinnerValidator {
             }
             if (mSpinner != null && mSpinner.getSelectedItem() != null) {
                 spinnerBooleanHashMap.put(NULL, false);
-                success = true;
             } else {
                 success = false;
                 spinnerBooleanHashMap.put(NULL, true);
@@ -48,7 +50,22 @@ public class SpinnerValidator {
         }
 
     }
+    public boolean isValid(HashMap<String, Boolean> hashMap) {
 
-    private SpinnerValidator() {
+        if (hashMap.get(SpinnerValidator.SUCCESS)) {
+            return true;
+        } else {
+            if (hashMap.get(SpinnerValidator.IS_REQUIRED)) {
+                if (hashMap.get(SpinnerValidator.NULL)) {
+                    errorCallBack.onError("Spinner is null");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public SpinnerValidator(ErrorCallBack errorCallBack) {
+        this.errorCallBack=errorCallBack;
     }
 }

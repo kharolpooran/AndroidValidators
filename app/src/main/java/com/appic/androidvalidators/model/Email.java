@@ -1,6 +1,10 @@
 package com.appic.androidvalidators.model;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
 import java.util.HashMap;
 
@@ -17,6 +21,7 @@ public class Email {
     public static String IS_REQUIRED = "IsRequired";
     public static String EMPTY = "Empty";
     public HashMap<String, Boolean> emailValidationResponse;
+    private ErrorCallBack errorCallBack;
 
     public String getValue() {
         return value;
@@ -55,6 +60,7 @@ public class Email {
                 if (this.value.matches(emailPattern)) {
                     success = true;
                     emailValidationResponse.put(IS_EMAIL, true);
+
                 } else {
                     success = false;
                     emailValidationResponse.put(IS_EMAIL, false);
@@ -66,51 +72,45 @@ public class Email {
             }
             emailValidationResponse.put(SUCCESS, success);
             return emailValidationResponse;
-            /*    emailValidationResponse.put(IS_REQUIRED, true);
-
-
-            } else {
-                emailValidationResponse.put(IS_REQUIRED, false);
-                if (this.value != null && !this.value.isEmpty()) {
-                    emailValidationResponse.put(EMPTY, false);
-                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                    if (this.value.matches(emailPattern)) {
-                        success = true;
-                        emailValidationResponse.put(IS_EMAIL, true);
-                    } else {
-                        success = false;
-                        emailValidationResponse.put(IS_EMAIL, false);
-                    }
-                } else {
-                    success = true;
-                    emailValidationResponse.put(EMPTY, false);
-                }
-            }*/
-
         }
-
 
     }
 
-    public String getErrorMessage() {
-        if (emailValidationResponse.get(Email.IS_REQUIRED)) {
-            if (!emailValidationResponse.get(Email.EMPTY)) {
-                if (!emailValidationResponse.get(Email.IS_EMAIL)) {
-                    return "incorrect email address";
+    public boolean isValid(HashMap<String, Boolean> emailValidation) {
+
+        if (emailValidation.get(Email.SUCCESS)) {
+            return true;
+        } else {
+            if (emailValidation.get(Email.IS_REQUIRED)) {
+                if (!emailValidation.get(Email.EMPTY)) {
+                    if (!emailValidation.get(Email.IS_EMAIL)) {
+                        errorCallBack.onError("Not Valid Email");
+                        return false;
+                    }
+                } else {
+                    errorCallBack.onError("email is should not be empty");
+                    return false;
                 }
             } else {
-                return "email is should not be empty";
+                if (!emailValidation.get(Email.EMPTY)) {
+                    if (!emailValidation.get(Email.IS_EMAIL)) {
+                        errorCallBack.onError("Not Valid Email");
+                        return false;
+                    }
+                }
             }
-        } else {
-            return "email is required";
-
         }
-        return "";
+        return true;
+    }
+
+    public Email(ErrorCallBack c) {
+        this.errorCallBack = c;
     }
 
     private Email(EmailBuilder emailBuilder) {
         this.value = emailBuilder.value;
         this.isRequired = emailBuilder.isRequired;
         this.emailValidationResponse = emailBuilder.emailValidationResponse;
+
     }
 }

@@ -3,6 +3,8 @@ package com.appic.androidvalidators.model;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.appic.androidvalidators.interfaces.ErrorCallBack;
+
 import java.util.HashMap;
 
 public class PhoneNumber {
@@ -19,6 +21,8 @@ public class PhoneNumber {
     public static String MIN_LENGTH = "MinLength";
     public static String IS_REQUIRED = "IsRequired";
     public static String EMPTY = "Empty";
+
+    private ErrorCallBack errorCallBack;
 
     public String getValue() {
         return value;
@@ -106,6 +110,37 @@ public class PhoneNumber {
             return phoneNumberValidatorResp;
         }
 
+    }
+
+    public PhoneNumber(ErrorCallBack back) {
+        this.errorCallBack = back;
+    }
+
+    public boolean isValid(HashMap<String, Boolean> hashMap) {
+
+        if (hashMap.get(PhoneNumber.SUCCESS)) {
+            return true;
+        } else {
+            if (hashMap.get(PhoneNumber.IS_REQUIRED)) {
+                if (!hashMap.get(PhoneNumber.EMPTY)) {
+                    if (!hashMap.get(PhoneNumber.MIN_LENGTH) && !hashMap.get(PhoneNumber.MAX_LENGTH)) {
+                        errorCallBack.onError("Invalid Number");
+                        return false;
+                    }
+                } else {
+                    errorCallBack.onError("Number should not be empty.");
+                    return false;
+                }
+            } else {
+                if (!hashMap.get(PhoneNumber.EMPTY)) {
+                    if (!hashMap.get(PhoneNumber.MIN_LENGTH) && !hashMap.get(PhoneNumber.MAX_LENGTH)) {
+                        errorCallBack.onError("Invalid Number");
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private PhoneNumber(PhoneNumberBuilder phoneNumberBuilder) {

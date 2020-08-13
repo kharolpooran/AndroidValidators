@@ -1,5 +1,7 @@
 package com.appic.androidvalidators.model;
 
+import com.appic.androidvalidators.interfaces.ErrorCallBack;
+
 import java.util.HashMap;
 
 public class Username {
@@ -26,6 +28,7 @@ public class Username {
     public static String IS_REQUIRED = "IsRequired";
     public static String IS_ALL_LOWER_CASE = "IsAllLowerCase";
     public static String EMPTY = "Empty";
+    private ErrorCallBack errorCallBack;
 
     public static class UsernameBuilder {
         private String value; //This is important, so we'll pass it to the constructor.
@@ -95,6 +98,41 @@ public class Username {
 
         return true;
 
+    }
+
+    public Username(ErrorCallBack errorCallBack) {
+        this.errorCallBack = errorCallBack;
+    }
+
+    public boolean isValid(HashMap<String, Boolean> hashMap) {
+
+        if (hashMap.get(Username.SUCCESS)) {
+            return true;
+        } else {
+            if (hashMap.get(Username.IS_REQUIRED)) {
+                if (!hashMap.get(Username.EMPTY)) {
+                    if (hashMap.get(Username.IS_CASE_SENSITIVE)) {
+                        if (!hashMap.get(Username.IS_ALL_LOWER_CASE)) {
+                            errorCallBack.onError("username should be in lower case");
+                            return false;
+                        }
+                    }
+                } else {
+                    errorCallBack.onError("username is should not be empty");
+                    return false;
+                }
+            } else {
+                if (!hashMap.get(Username.EMPTY)) {
+                    if (hashMap.get(Username.IS_CASE_SENSITIVE)) {
+                        if (!hashMap.get(Username.IS_ALL_LOWER_CASE)) {
+                            errorCallBack.onError("Not Valid username");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private Username(Username.UsernameBuilder usernameBuilder) {

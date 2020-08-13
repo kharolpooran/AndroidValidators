@@ -2,6 +2,8 @@ package com.appic.androidvalidators.model;
 
 import android.widget.CheckBox;
 
+import com.appic.androidvalidators.interfaces.ErrorCallBack;
+
 import java.util.HashMap;
 
 
@@ -10,8 +12,9 @@ public class CheckBoxValidator {
 
     //Static Response Code.
     public static String SUCCESS = "Success";
-    public static String NULL = "NULL";
+    public static String IS_CHECKED = "IS_CHECKED";
     public static String IS_REQUIRED = "IsRequired";
+    private ErrorCallBack errorCallBack;
 
     public static class CheckBoxBuilder {
         private CheckBox mCheckBox; //This is important, so we'll pass it to the constructor.
@@ -35,10 +38,10 @@ public class CheckBoxValidator {
                 hashMap.put(IS_REQUIRED, false);
             }
             if (mCheckBox != null && !mCheckBox.isChecked()) {
-                hashMap.put(NULL, false);
+                hashMap.put(IS_CHECKED, true);
                 hashMap.put(SUCCESS, true);
             } else {
-                hashMap.put(NULL, true);
+                hashMap.put(IS_CHECKED, false);
                 hashMap.put(SUCCESS, false);
             }
             return hashMap;
@@ -46,6 +49,22 @@ public class CheckBoxValidator {
 
     }
 
-    private CheckBoxValidator() {
+    public boolean isValid(HashMap<String, Boolean> hashMap) {
+
+        if (hashMap.get(CheckBoxValidator.SUCCESS)) {
+            return true;
+        } else {
+            if (hashMap.get(CheckBoxValidator.IS_REQUIRED)) {
+                if (!hashMap.get(CheckBoxValidator.IS_CHECKED)) {
+                    errorCallBack.onError("Please check checkbox.");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public CheckBoxValidator(ErrorCallBack s) {
+        this.errorCallBack = s;
     }
 }
