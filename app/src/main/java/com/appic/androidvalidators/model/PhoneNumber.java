@@ -101,6 +101,7 @@ public class PhoneNumber {
                 phoneNumberValidatorResp.put(SUCCESS, false);
                 phoneNumberValidatorResp.put(EMPTY, true);
                 phoneNumberValidatorResp.put(MAX_LENGTH, false);
+                phoneNumberValidatorResp.put(MIN_LENGTH, false);
             }
             return phoneNumberValidatorResp;
         }
