@@ -130,6 +130,7 @@ public class Password {
                             isSuccess = false;
                         }
                     } else {
+                        passwordValidationResponse.put(SPECIAL_CHARACTER, false);
                         passwordValidationResponse.put(SPECIAL_CHARACTER_REQUIRED, false);
                     }
 
@@ -142,6 +143,7 @@ public class Password {
                             isSuccess = false;
                         }
                     } else {
+                        passwordValidationResponse.put(NUMBER, false);
                         passwordValidationResponse.put(NUMBER_REQUIRED, false);
                     }
 
@@ -155,6 +157,7 @@ public class Password {
                             isSuccess = false;
                         }
                     } else {
+                        passwordValidationResponse.put(UPPER_CASE, false);
                         passwordValidationResponse.put(UPPER_CASE_REQUIRED, false);
                     }
 
@@ -167,6 +170,7 @@ public class Password {
                             isSuccess = false;
                         }
                     } else {
+                        passwordValidationResponse.put(LOWER_CASE, false);
                         passwordValidationResponse.put(LOWER_CASE_REQUIRED, false);
                     }
 
@@ -184,6 +188,7 @@ public class Password {
                             isSuccess = false;
                         }
                     } else {
+                        passwordValidationResponse.put(MATCH_PASSWORD, false);
                         passwordValidationResponse.put(CONFIRM_PASSWORD, false);
                     }
                 } else {
@@ -198,6 +203,7 @@ public class Password {
                                 isSuccess = false;
                             }
                         } else {
+                            passwordValidationResponse.put(SPECIAL_CHARACTER, false);
                             passwordValidationResponse.put(SPECIAL_CHARACTER_REQUIRED, false);
                         }
 
@@ -211,6 +217,7 @@ public class Password {
                                 isSuccess = false;
                             }
                         } else {
+                            passwordValidationResponse.put(NUMBER, false);
                             passwordValidationResponse.put(NUMBER_REQUIRED, false);
                         }
 
@@ -224,6 +231,7 @@ public class Password {
                                 isSuccess = false;
                             }
                         } else {
+                            passwordValidationResponse.put(UPPER_CASE, false);
                             passwordValidationResponse.put(UPPER_CASE_REQUIRED, false);
                         }
 
@@ -236,6 +244,7 @@ public class Password {
                                 isSuccess = false;
                             }
                         } else {
+                            passwordValidationResponse.put(LOWER_CASE, false);
                             passwordValidationResponse.put(LOWER_CASE_REQUIRED, false);
                         }
 
@@ -253,6 +262,7 @@ public class Password {
                                 isSuccess = false;
                             }
                         } else {
+                            passwordValidationResponse.put(MATCH_PASSWORD, false);
                             passwordValidationResponse.put(CONFIRM_PASSWORD, false);
                         }
 

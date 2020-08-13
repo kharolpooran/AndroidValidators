@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }*/
 
 
-                            if (password.get(Password.IS_REQUIRED)) {
+                            /*if (password.get(Password.IS_REQUIRED)) {
                                 if (!password.get(Password.EMPTY)) {
                                     if (password.get(Password.RANGE)) {
                                         if (password.get(Password.NUMBER_REQUIRED)) {
@@ -250,6 +250,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 }
                             } else {
                                 showSnackBar("Password is required");
+                            }*/
+
+                            if (!password.get(Password.LOWER_CASE)) {
+                                showSnackBar("LowerCAse");
                             }
 
                         }
