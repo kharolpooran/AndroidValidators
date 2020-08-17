@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         .setNumbersOnly(true)
                         .setConfirmPassword(confpassword.getText().toString())
                         .comparePassword(true)
-                        .usePreDefinePattern(true)/*If Both number only and pre define is true then it will use pre define pattern*/
                         .build();
 
                 user = new Username.UsernameBuilder(username.getText().toString())

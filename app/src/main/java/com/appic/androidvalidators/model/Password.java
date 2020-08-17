@@ -47,7 +47,7 @@ public class Password {
 
     public static class PasswordBuilder {
         private String userPassword; //This is important, so we'll pass it to the constructor.
-        private String confirmPassword="";
+        private String confirmPassword = "";
         private int minValue = 0;
         private int maxValue = 0;
         //private boolean isSpecialCharacterRequired = false;
@@ -55,7 +55,7 @@ public class Password {
         //private boolean isUppercaseRequired = false;
         //private boolean isLowerCaseRequired = false;
         private boolean isRequired = true;
-        private boolean usePreDefinedPattern = false;
+        private boolean usePreDefinedPattern = true;
         private boolean compare_password = false;
 
         public PasswordBuilder(String value) {
@@ -83,10 +83,10 @@ public class Password {
             return this;
         }
 
-        public Password.PasswordBuilder usePreDefinePattern(boolean usePreDefinedPattern) {
+        /*public Password.PasswordBuilder usePreDefinePattern(boolean usePreDefinedPattern) {
             this.usePreDefinedPattern = usePreDefinedPattern;
             return this;
-        }
+        }*/
 
         /*public Password.PasswordBuilder setSpecialCharacterRequired(boolean isSpecialCharacterRequired) {
             this.isSpecialCharacterRequired = isSpecialCharacterRequired;
@@ -152,18 +152,21 @@ public class Password {
                         passwordValidationResponse.put(SPECIAL_CHARACTER, false);
                         passwordValidationResponse.put(SPECIAL_CHARACTER_REQUIRED, false);
                     }*/
-                    if (this.usePreDefinedPattern) {
-                        passwordValidationResponse.put(USE_PREDEFINED_PATTERN, true);
-                        if (combination.matcher(this.userPassword).find()) {
-                            passwordValidationResponse.put(PREDEFINED_PATTERN, true);
+                    if (!this.isNumberRequired) {
+                        if (this.usePreDefinedPattern) {
+                            passwordValidationResponse.put(USE_PREDEFINED_PATTERN, true);
+                            if (combination.matcher(this.userPassword).find()) {
+                                passwordValidationResponse.put(PREDEFINED_PATTERN, true);
+                            } else {
+                                passwordValidationResponse.put(PREDEFINED_PATTERN, false);
+                                isSuccess = false;
+                            }
                         } else {
+                            passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
                             passwordValidationResponse.put(PREDEFINED_PATTERN, false);
-                            isSuccess = false;
                         }
-                    } else {
-                        passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
-                        passwordValidationResponse.put(PREDEFINED_PATTERN, false);
                     }
+
                     if (this.isNumberRequired) {
                         passwordValidationResponse.put(NUMBER_REQUIRED, true);
                         if (digitCasePatten.matcher(this.userPassword).find()) {
@@ -236,17 +239,19 @@ public class Password {
                             passwordValidationResponse.put(SPECIAL_CHARACTER, false);
                             passwordValidationResponse.put(SPECIAL_CHARACTER_REQUIRED, false);
                         }*/
-                        if (this.usePreDefinedPattern) {
-                            passwordValidationResponse.put(USE_PREDEFINED_PATTERN, true);
-                            if (combination.matcher(this.userPassword).find()) {
-                                passwordValidationResponse.put(PREDEFINED_PATTERN, true);
+                        if (!this.isNumberRequired) {
+                            if (this.usePreDefinedPattern) {
+                                passwordValidationResponse.put(USE_PREDEFINED_PATTERN, true);
+                                if (combination.matcher(this.userPassword).find()) {
+                                    passwordValidationResponse.put(PREDEFINED_PATTERN, true);
+                                } else {
+                                    passwordValidationResponse.put(PREDEFINED_PATTERN, false);
+                                    isSuccess = false;
+                                }
                             } else {
+                                passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
                                 passwordValidationResponse.put(PREDEFINED_PATTERN, false);
-                                isSuccess = false;
                             }
-                        } else {
-                            passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
-                            passwordValidationResponse.put(PREDEFINED_PATTERN, false);
                         }
                         if (this.isNumberRequired) {
                             String regex = "\\d+";

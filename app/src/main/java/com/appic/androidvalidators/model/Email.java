@@ -2,18 +2,20 @@ package com.appic.androidvalidators.model;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Patterns;
 import android.widget.Toast;
 
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class Email {
 
     public static String TAG = Email.class.getSimpleName();
     private String value = ""; //This is important, so we'll pass it to the constructor.
     private boolean isRequired = false;
-    public static String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    //public static String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     //Static Response Code.
     public static String SUCCESS = "Success";
@@ -56,11 +58,11 @@ public class Email {
             }
             if (this.value != null && !this.value.isEmpty()) {
                 emailValidationResponse.put(EMPTY, false);
-                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                if (this.value.matches(emailPattern)) {
+                //String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                Pattern pattern = Patterns.EMAIL_ADDRESS;
+                if (pattern.matcher(this.value).matches()) {
                     success = true;
                     emailValidationResponse.put(IS_EMAIL, true);
-
                 } else {
                     success = false;
                     emailValidationResponse.put(IS_EMAIL, false);
