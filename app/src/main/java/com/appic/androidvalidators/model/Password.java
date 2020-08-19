@@ -165,6 +165,9 @@ public class Password {
                             passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
                             passwordValidationResponse.put(PREDEFINED_PATTERN, false);
                         }
+                    } else {
+                        passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
+                        passwordValidationResponse.put(PREDEFINED_PATTERN, false);
                     }
 
                     if (this.isNumberRequired) {
@@ -252,6 +255,9 @@ public class Password {
                                 passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
                                 passwordValidationResponse.put(PREDEFINED_PATTERN, false);
                             }
+                        } else {
+                            passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
+                            passwordValidationResponse.put(PREDEFINED_PATTERN, false);
                         }
                         if (this.isNumberRequired) {
                             String regex = "\\d+";
