@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         .build();
 
                 passwordValidation = new Password.PasswordBuilder(userpassword.getText().toString())
-                        .setMinValue(6)
-                        .setMaxValue(8)
+                        .setMinValue(3)
+                        .setMaxValue(5)
                         .setNumbersOnly(true)
                         .setConfirmPassword(confpassword.getText().toString())
                         .comparePassword(true)
@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 phoneNumber = new PhoneNumber.PhoneNumberBuilder(number.getText().toString())
                         .setRequired(true)
-                        .setMinLength(10)
-                        .setMaxLength(10)
+                        .setMinLength(3)
+                        .setMaxLength(5)
                         .build();
 
                 checkBoxValidation = new CheckBoxValidator.CheckBoxBuilder(checkbox)

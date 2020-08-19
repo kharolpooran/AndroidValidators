@@ -92,7 +92,7 @@ public class PhoneNumber {
             }
             if (this.value != null && !this.value.isEmpty()) {
                 phoneNumberValidatorResp.put(EMPTY, false);
-                if (this.value.length() <= minLength && this.value.length() >= maxLength) {
+                if (this.value.length() >= minLength && this.value.length() <= maxLength) {
                     phoneNumberValidatorResp.put(SUCCESS, true);
                     phoneNumberValidatorResp.put(MAX_LENGTH, true);
                     phoneNumberValidatorResp.put(MIN_LENGTH, true);
