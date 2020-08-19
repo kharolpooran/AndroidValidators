@@ -4,6 +4,8 @@ import android.widget.CheckBox;
 
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 
 
@@ -37,7 +39,7 @@ public class CheckBoxValidator {
             } else {
                 hashMap.put(IS_REQUIRED, false);
             }
-            if (mCheckBox != null && !mCheckBox.isChecked()) {
+            if (mCheckBox != null && mCheckBox.isChecked()) {
                 hashMap.put(IS_CHECKED, true);
                 hashMap.put(SUCCESS, true);
             } else {
@@ -49,7 +51,7 @@ public class CheckBoxValidator {
 
     }
 
-    public boolean isValid(HashMap<String, Boolean> hashMap) {
+    public boolean isValid(@NotNull HashMap<String, Boolean> hashMap) {
 
         if (hashMap.get(CheckBoxValidator.SUCCESS)) {
             return true;
