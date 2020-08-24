@@ -1,8 +1,5 @@
 package com.appic.androidvalidators.model;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
 import java.util.HashMap;
@@ -19,6 +16,8 @@ public class Password {
     public static String IS_REQUIRED = "IsRequired";
     public static String EMPTY = "Empty";
     public static String RANGE = "Range";
+    public static String MAX_RANGE = "Max_Range";
+    public static String MIN_RANGE = "Min_Range";
     //public static String SPECIAL_CHARACTER = "SpecialCharacter";
     //public static String SPECIAL_CHARACTER_REQUIRED = "SPECIAL_CHARACTER_REQUIRED";
     public static String NUMBER = "Number";
@@ -48,7 +47,7 @@ public class Password {
     public static class PasswordBuilder {
         private String userPassword; //This is important, so we'll pass it to the constructor.
         private String confirmPassword = "";
-        private int minValue = 0;
+        public int minValue = 0;
         private int maxValue = 0;
         //private boolean isSpecialCharacterRequired = false;
         private boolean isNumberRequired = false;
@@ -83,6 +82,16 @@ public class Password {
             return this;
         }
 
+        public int getMaxValue() {
+
+            return this.maxValue;
+        }
+
+        public int getMinValue() {
+
+            return this.minValue;
+        }
+
         /*public Password.PasswordBuilder usePreDefinePattern(boolean usePreDefinedPattern) {
             this.usePreDefinedPattern = usePreDefinedPattern;
             return this;
@@ -113,8 +122,15 @@ public class Password {
             return this;
         }*/
 
-        public HashMap<String, Boolean> build() {
-            HashMap<String, Boolean> passwordValidationResponse = new HashMap<>();
+        public HashMap<String, Object> build() {
+            HashMap<String, Object> passwordValidationResponse = new HashMap<>();
+
+            if (minValue == 0) {
+                minValue = 6;
+            }
+            if (maxValue == 0) {
+                maxValue = 8;
+            }
 
             Pattern specailCharPatten = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
             Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
@@ -124,7 +140,7 @@ public class Password {
             String regexComb = "^(?=.*[0-9])"
                     + "(?=.*[a-z])(?=.*[A-Z])"
                     + "(?=.*[@#$%^&+=])"
-                    + "(?=\\S+$).{6,8}$";
+                    + "(?=\\S+$).{" + minValue + "," + maxValue + "}$";
             Pattern combination = Pattern.compile(regexComb);
 
 
@@ -230,6 +246,8 @@ public class Password {
                 } else {
                     if (this.userPassword.length() >= minValue && this.userPassword.length() <= maxValue) {
                         passwordValidationResponse.put(RANGE, true);
+                        passwordValidationResponse.put(MAX_RANGE, maxValue);
+                        passwordValidationResponse.put(MIN_RANGE, minValue);
                         /*if (this.isSpecialCharacterRequired) {
                             passwordValidationResponse.put(SPECIAL_CHARACTER_REQUIRED, true);
                             if (specailCharPatten.matcher(this.userPassword).find()) {
@@ -358,49 +376,50 @@ public class Password {
         this.errorCallBack = errorCallBack;
     }
 
-    public boolean isValid(HashMap<String, Boolean> hashMap) {
+    public boolean isValid(HashMap<String, Object> hashMap) {
 
-        if (hashMap.get(Password.SUCCESS)) {
+        if ((boolean) hashMap.get(Password.SUCCESS)) {
             return true;
         } else {
-            if (hashMap.get(Password.IS_REQUIRED)) {
-                if (!hashMap.get(Password.EMPTY)) {
-                    if (hashMap.get(Password.USE_PREDEFINED_PATTERN)) {
-                        if (!hashMap.get(Password.PREDEFINED_PATTERN)) {
-                            errorCallBack.onError("Password should contains at least one digits, one upper case alphabet, one lower case alphabet, one special characters, and length 8 to 20 characters.");
+            if ((boolean) hashMap.get(Password.IS_REQUIRED)) {
+                if (!(boolean) hashMap.get(Password.EMPTY)) {
+                    if ((boolean) hashMap.get(Password.USE_PREDEFINED_PATTERN)) {
+                        if (!(boolean) hashMap.get(Password.PREDEFINED_PATTERN)) {
+
+                            errorCallBack.onValidationError("Password should contains at least one digits, one upper case alphabet, one lower case alphabet, one special characters, and length " + hashMap.get(Password.MIN_RANGE) + " to " + hashMap.get(Password.MAX_RANGE) + " characters.");
                             return false;
                         }
-                        if (hashMap.get(Password.CONFIRM_PASSWORD)) {
-                            if (!hashMap.get(Password.MATCH_PASSWORD)) {
-                                errorCallBack.onError("Password and Confirm Password doesn't match.");
+                        if ((boolean) hashMap.get(Password.CONFIRM_PASSWORD)) {
+                            if (!(boolean) hashMap.get(Password.MATCH_PASSWORD)) {
+                                errorCallBack.onValidationError("Password and Confirm Password doesn't match.");
                                 return false;
                             }
                         }
                     } else {
-                        if (hashMap.get(Password.RANGE)) {
-                            if (hashMap.get(Password.NUMBER_REQUIRED)) {//true or false
-                                if (!hashMap.get(Password.NUMBER)) {
-                                    errorCallBack.onError("Password should contain number only.");
+                        if ((boolean) hashMap.get(Password.RANGE)) {
+                            if ((boolean) hashMap.get(Password.NUMBER_REQUIRED)) {//true or false
+                                if (!(boolean) hashMap.get(Password.NUMBER)) {
+                                    errorCallBack.onValidationError("Password should contain number only.");
                                     return false;
                                 }
                             }
-                            if (hashMap.get(Password.CONFIRM_PASSWORD)) {
-                                if (!hashMap.get(Password.MATCH_PASSWORD)) {
-                                    errorCallBack.onError("Password and Confirm Password doesn't match.");
+                            if ((boolean) hashMap.get(Password.CONFIRM_PASSWORD)) {
+                                if (!(boolean) hashMap.get(Password.MATCH_PASSWORD)) {
+                                    errorCallBack.onValidationError("Password and Confirm Password doesn't match.");
                                     return false;
                                 }
                             }
                         } else {
-                            errorCallBack.onError("Password should be in specific length.");
+                            errorCallBack.onValidationError("Password should be in specific length.");
                             return false;
                         }
                     }
                 } else {
-                    errorCallBack.onError("Password should not be empty.");
+                    errorCallBack.onValidationError("Password should not be empty.");
                     return false;
                 }
             } else {
-                errorCallBack.onError("Password is required.");
+                errorCallBack.onValidationError("Password is required.");
                 return false;
             }
         }

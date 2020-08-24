@@ -1,7 +1,7 @@
 package com.appic.androidvalidators.model;
 
-import android.util.Log;
 import android.widget.EditText;
+
 
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
@@ -124,17 +124,17 @@ public class PhoneNumber {
             if (hashMap.get(PhoneNumber.IS_REQUIRED)) {
                 if (!hashMap.get(PhoneNumber.EMPTY)) {
                     if (!hashMap.get(PhoneNumber.MIN_LENGTH) && !hashMap.get(PhoneNumber.MAX_LENGTH)) {
-                        errorCallBack.onError("Invalid Number");
+                        errorCallBack.onValidationError("Invalid Number");
                         return false;
                     }
                 } else {
-                    errorCallBack.onError("Number should not be empty.");
+                    errorCallBack.onValidationError("Number should not be empty.");
                     return false;
                 }
             } else {
                 if (!hashMap.get(PhoneNumber.EMPTY)) {
                     if (!hashMap.get(PhoneNumber.MIN_LENGTH) && !hashMap.get(PhoneNumber.MAX_LENGTH)) {
-                        errorCallBack.onError("Invalid Number");
+                        errorCallBack.onValidationError("Invalid Number");
                         return false;
                     }
                 }

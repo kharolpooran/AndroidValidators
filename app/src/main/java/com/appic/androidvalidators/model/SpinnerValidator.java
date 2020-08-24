@@ -2,6 +2,7 @@ package com.appic.androidvalidators.model;
 
 import android.widget.Spinner;
 
+
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class SpinnerValidator {
         } else {
             if (hashMap.get(SpinnerValidator.IS_REQUIRED)) {
                 if (hashMap.get(SpinnerValidator.NULL)) {
-                    errorCallBack.onError("Spinner is null");
+                    errorCallBack.onValidationError("Spinner is null");
                     return false;
                 }
             }

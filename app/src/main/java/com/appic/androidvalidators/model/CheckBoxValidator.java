@@ -1,7 +1,6 @@
 package com.appic.androidvalidators.model;
 
 import android.widget.CheckBox;
-
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +57,7 @@ public class CheckBoxValidator {
         } else {
             if (hashMap.get(CheckBoxValidator.IS_REQUIRED)) {
                 if (!hashMap.get(CheckBoxValidator.IS_CHECKED)) {
-                    errorCallBack.onError("Please check checkbox.");
+                    errorCallBack.onValidationError("Please check checkbox.");
                     return false;
                 }
             }

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     LinearLayout LLMain;
     CheckBox checkbox;
     HashMap<String, Boolean> emailValidation;
-    HashMap<String, Boolean> passwordValidation;
+    HashMap<String, Object> passwordValidation;
     HashMap<String, Boolean> checkBoxValidation;
 
     @Override
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onError(String s) {
+    public void onValidationError(String s) {
         hideKeyboard();
         showSnackBar(s);
     }

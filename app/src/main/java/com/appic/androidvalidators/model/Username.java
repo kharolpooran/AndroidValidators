@@ -1,5 +1,7 @@
 package com.appic.androidvalidators.model;
 
+
+
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
 import java.util.HashMap;
@@ -113,19 +115,19 @@ public class Username {
                 if (!hashMap.get(Username.EMPTY)) {
                     if (hashMap.get(Username.IS_CASE_SENSITIVE)) {
                         if (!hashMap.get(Username.IS_ALL_LOWER_CASE)) {
-                            errorCallBack.onError("username should be in lower case");
+                            errorCallBack.onValidationError("username should be in lower case");
                             return false;
                         }
                     }
                 } else {
-                    errorCallBack.onError("username is should not be empty");
+                    errorCallBack.onValidationError("username is should not be empty");
                     return false;
                 }
             } else {
                 if (!hashMap.get(Username.EMPTY)) {
                     if (hashMap.get(Username.IS_CASE_SENSITIVE)) {
                         if (!hashMap.get(Username.IS_ALL_LOWER_CASE)) {
-                            errorCallBack.onError("Not Valid username");
+                            errorCallBack.onValidationError("Not Valid username");
                             return false;
                         }
                     }

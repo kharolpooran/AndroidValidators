@@ -1,9 +1,7 @@
 package com.appic.androidvalidators.model;
 
-import android.content.Context;
-import android.util.Log;
 import android.util.Patterns;
-import android.widget.Toast;
+
 
 import com.appic.androidvalidators.interfaces.ErrorCallBack;
 
@@ -86,17 +84,17 @@ public class Email {
             if (emailValidation.get(Email.IS_REQUIRED)) {
                 if (!emailValidation.get(Email.EMPTY)) {
                     if (!emailValidation.get(Email.IS_EMAIL)) {
-                        errorCallBack.onError("Not Valid Email");
+                        errorCallBack.onValidationError("Not Valid Email");
                         return false;
                     }
                 } else {
-                    errorCallBack.onError("email is should not be empty");
+                    errorCallBack.onValidationError("email is should not be empty");
                     return false;
                 }
             } else {
                 if (!emailValidation.get(Email.EMPTY)) {
                     if (!emailValidation.get(Email.IS_EMAIL)) {
-                        errorCallBack.onError("Not Valid Email");
+                        errorCallBack.onValidationError("Not Valid Email");
                         return false;
                     }
                 }
