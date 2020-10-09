@@ -140,7 +140,6 @@ public class Password {
             String regexComb = "^(?=.*[0-9])"
                     + "(?=.*[a-z])(?=.*[A-Z])"
                     + "(?=.*[@#$%^&+=])"
-                    + "(?=\\\\S+$)"
                     + "(?=\\S+$).{" + minValue + "," + maxValue + "}$";
             Pattern combination = Pattern.compile(regexComb);
 

@@ -84,11 +84,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         .build();
 
                 passwordValidation = new Password.PasswordBuilder(userpassword.getText().toString())
-                        .setMinValue(3)
-                        .setMaxValue(5)
-                        .setNumbersOnly(true)
+                        .setMinValue(4)
+                        .setMaxValue(12)
+                        .setNumbersOnly(false)
                         .setConfirmPassword(confpassword.getText().toString())
-                        .comparePassword(true)
+                        .comparePassword(false)
                         .build();
 
                 user = new Username.UsernameBuilder(username.getText().toString())
