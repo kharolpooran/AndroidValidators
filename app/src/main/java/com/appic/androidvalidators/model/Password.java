@@ -58,7 +58,7 @@ public class Password {
         private boolean compare_password = false;
 
         public PasswordBuilder(String value) {
-            this.userPassword = value.trim();
+            this.userPassword = value;
         }
 
         public Password.PasswordBuilder setConfirmPassword(String confirmPassword) {
