@@ -135,11 +135,12 @@ public class Password {
             Pattern specailCharPatten = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
             Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
             Pattern lowerCasePatten = Pattern.compile("[a-z ]");
-            Pattern digitCasePatten = Pattern.compile("[0-9]+");
+            Pattern digitCasePatten = Pattern.compile("[0-9]+" + "(?=\\\\S+$)");
             // Regex to check valid password.
             String regexComb = "^(?=.*[0-9])"
                     + "(?=.*[a-z])(?=.*[A-Z])"
                     + "(?=.*[@#$%^&+=])"
+                    + "(?=\\\\S+$)"
                     + "(?=\\S+$).{" + minValue + "," + maxValue + "}$";
             Pattern combination = Pattern.compile(regexComb);
 
@@ -190,6 +191,8 @@ public class Password {
                         passwordValidationResponse.put(NUMBER_REQUIRED, true);
                         if (digitCasePatten.matcher(this.userPassword).find()) {
                             passwordValidationResponse.put(NUMBER, true);
+                            passwordValidationResponse.put(MAX_RANGE, maxValue);
+                            passwordValidationResponse.put(MIN_RANGE, minValue);
                         } else {
                             passwordValidationResponse.put(NUMBER, false);
                             isSuccess = false;
@@ -276,6 +279,8 @@ public class Password {
                         } else {
                             passwordValidationResponse.put(USE_PREDEFINED_PATTERN, false);
                             passwordValidationResponse.put(PREDEFINED_PATTERN, false);
+                            passwordValidationResponse.put(MAX_RANGE, maxValue);
+                            passwordValidationResponse.put(MIN_RANGE, minValue);
                         }
                         if (this.isNumberRequired) {
                             String regex = "\\d+";
@@ -346,6 +351,8 @@ public class Password {
                         passwordValidationResponse.put(NUMBER_REQUIRED, false);
                         passwordValidationResponse.put(NUMBER, false);
                         passwordValidationResponse.put(EMPTY, false);
+                        passwordValidationResponse.put(MAX_RANGE, maxValue);
+                        passwordValidationResponse.put(MIN_RANGE, minValue);
                     }
                 }
             } else {
@@ -386,7 +393,7 @@ public class Password {
                     if ((boolean) hashMap.get(Password.USE_PREDEFINED_PATTERN)) {
                         if (!(boolean) hashMap.get(Password.PREDEFINED_PATTERN)) {
 
-                            errorCallBack.onValidationError("Password should contains at least one digits, one upper case alphabet, one lower case alphabet, one special characters, and length " + hashMap.get(Password.MIN_RANGE) + " to " + hashMap.get(Password.MAX_RANGE) + " characters.");
+                            errorCallBack.onValidationError("Password should contains at least one digits, one upper case alphabet, one lower case alphabet, one special characters, and length " + hashMap.get(Password.MIN_RANGE) + " to " + hashMap.get(Password.MAX_RANGE) + " characters and no whitespace are allowed.");
                             return false;
                         }
                         if ((boolean) hashMap.get(Password.CONFIRM_PASSWORD)) {
@@ -399,7 +406,7 @@ public class Password {
                         if ((boolean) hashMap.get(Password.RANGE)) {
                             if ((boolean) hashMap.get(Password.NUMBER_REQUIRED)) {//true or false
                                 if (!(boolean) hashMap.get(Password.NUMBER)) {
-                                    errorCallBack.onValidationError("Password should contain number only.");
+                                    errorCallBack.onValidationError("Password should contain number only and no whitespace are allowed.");
                                     return false;
                                 }
                             }
@@ -410,7 +417,7 @@ public class Password {
                                 }
                             }
                         } else {
-                            errorCallBack.onValidationError("Password should be in specific length.");
+                            errorCallBack.onValidationError("Password length should be "  + hashMap.get(Password.MIN_RANGE) + " to " + hashMap.get(Password.MAX_RANGE) +  " characters");
                             return false;
                         }
                     }
